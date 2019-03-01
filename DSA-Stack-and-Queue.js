@@ -36,7 +36,7 @@ const peek = stack  => {
     console.log('Stack is empty');
     return new Error('Stack is empty');
   }
-  return stack.top;
+  return stack.top.data;
 }
 
 const display = stack => {
