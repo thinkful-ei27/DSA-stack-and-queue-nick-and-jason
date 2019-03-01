@@ -167,14 +167,14 @@ const sortStack = stack => {
       tempVar = stack.pop().data;
       } else {
       stack.push(tempStack.pop().data);
-      }}
-    }
-    if(tempVar > tempStack.top.data){
+      }
+    } else if(tempVar > tempStack.top.data){
       tempStack.push(tempVar);
       tempVar = false;
     } else {
       stack.push(tempStack.pop().data);
     }
+  }
   display(tempStack);
 }
 
@@ -207,6 +207,7 @@ function main(){
   numbStack.push(5);
   numbStack.push(8);
   numbStack.push(3);
+  numbStack.push(9);
   numbStack.push(6);
   numbStack.push(7);
   numbStack.push(2);
