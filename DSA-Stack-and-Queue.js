@@ -54,20 +54,17 @@ const display = stack => {
 //Palindromes
 function is_palindrome(input){
   input = input.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
-  const test1 = new Stack();
-  const test2 = new Stack();
+  const test = new Stack();
   for(let x = 0; x < input.length; x++){
-    test1.push(input.charAt(x));
-    test2.push(input.charAt(input.length - 1 - x))
+    test.push(input.charAt(x))
   }
-  let node1 = test1.top;
-  let node2 = test2.top;
-  while(node1 && node2){
-    if(node1.data !== node2.data){
+  display(test);
+  let i = 0;
+  while(test.top !== null){
+    if(test.pop().data !== input[i]){
       return false;
     }
-    node1 = node1.next;
-    node2 = node2.next;
+    i++;
   }
   return true;
 
@@ -115,10 +112,12 @@ function main(){
   //Have to pop twice as McCoy is not on top
   starTrek.pop();
   // display(starTrek);
-  //  console.log(is_palindrome(`0987654321234567890`));
-  console.log(matching('()'));
-  console.log(matching('(bob))'));
-  console.log(matching('(()'));
+  // console.log(is_palindrome('madam'));
+  // console.log(is_palindrome('12345678'));
+  // console.log(is_palindrome(`0987654321234567890`));
+  // console.log(matching('()'));
+  // console.log(matching('(bob))'));
+  // console.log(matching('(()'));
 }
 
 main();
