@@ -86,7 +86,7 @@ function main(){
   //Have to pop twice as McCoy is not on top
   starTrek.pop();
   // display(starTrek);
-  console.log(is_palindrome(`Madam I'm Adam`));
+  console.log(is_palindrome(`0987654321234567890`));
 }
 
 main();
