@@ -5,6 +5,36 @@ class _Node {
   }
 }
 
+class _QNode {
+  constructor(data, next, previous){
+    this.data = data;
+    this.next = next;
+    this.previous = previous;
+  }
+}
+
+class Queue {
+  constructor(){
+    this.first = null;
+    this.last = null;
+  }
+  //FIFO
+   enqueue(data){
+    const node = new _QNode(data);
+
+    if (this.first === null){
+      this.first = node;
+    }
+    if (this.last) {
+      node.next = this.last;
+      this.last.prev = node;
+    }
+    this.last = node;
+  }
+
+
+}
+
 class Stack {
   constructor(){
     this.top = null;
@@ -175,8 +205,12 @@ const sortStack = stack => {
       stack.push(tempStack.pop().data);
     }
   }
-  display(tempStack);
+  while(tempStack.top){
+    stack.push(tempStack.pop().data);
+  }
+  display(stack);
 }
+
 
 
 function main(){
@@ -203,15 +237,20 @@ function main(){
   //console.log(matching('{{}'));
   //console.log(matching('{}}'));
   // console.log(matching('({)}'));
-  const numbStack = new Stack();
-  numbStack.push(5);
-  numbStack.push(8);
-  numbStack.push(3);
-  numbStack.push(9);
-  numbStack.push(6);
-  numbStack.push(7);
-  numbStack.push(2);
-  sortStack(numbStack);
+  //const numbStack = new Stack();
+  //numbStack.push(5);
+  //numbStack.push(8);
+  //numbStack.push(3);
+  //numbStack.push(9);
+  //numbStack.push(6);
+  //numbStack.push(7);
+  //numbStack.push(2);
+  //sortStack(numbStack);
+
+
+  const starTrekQ = new Queue();
+  starTrekQ.enqueue('Kirk');
+  console.log(starTrekQ);
 }
 
 main();
