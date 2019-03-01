@@ -158,10 +158,24 @@ const matching = string => {
 
 const sortStack = stack => {
   let tempStack = new Stack();
-  let tempItem = stack.pop();
-  if(tempItem.data < stack.peek().data){
-    tempStack.push(tempItem)
-  } else tempStack.push(stack.pop());
+  tempStack.push(stack.pop().data);
+  let tempVar = stack.pop().data;
+  while(stack.top || tempVar){
+    if(stack.top){
+      if(tempVar > tempStack.top.data){
+      tempStack.push(tempVar);
+      tempVar = stack.pop().data;
+      } else {
+      stack.push(tempStack.pop().data);
+      }}
+    }
+    if(tempVar > tempStack.top.data){
+      tempStack.push(tempVar);
+      tempVar = false;
+    } else {
+      stack.push(tempStack.pop().data);
+    }
+  display(tempStack);
 }
 
 
@@ -184,13 +198,19 @@ function main(){
   // console.log(matching('(bob))'));
   // console.log(matching('((Help))IhaveFallen((andIcantGetUp())'));
   // console.log(matching('(sho(rter)'))
-  //console.log(matching('(([]))'));
-  //console.log(matching('(([)]'));
-  //console.log(matching('(()[])'));
+  //console.log(matching('(([]))'))
   //console.log(matching('(()())['));
   //console.log(matching('{{}'));
   //console.log(matching('{}}'));
-  console.log(matching('({)}'));
+  // console.log(matching('({)}'));
+  const numbStack = new Stack();
+  numbStack.push(5);
+  numbStack.push(8);
+  numbStack.push(3);
+  numbStack.push(6);
+  numbStack.push(7);
+  numbStack.push(2);
+  sortStack(numbStack);
 }
 
 main();
