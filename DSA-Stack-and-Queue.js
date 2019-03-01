@@ -73,6 +73,35 @@ function is_palindrome(input){
 
 }
 
+const matching = string => {
+  const stack = new Stack();
+  for (let i = 0; i < string.length; i++){
+      stack.push(string[string.length -1 - i]);
+    }
+  console.log(stack);
+  let node = stack.top;
+  let counter = 0;
+  let position = 0;
+  while(node){
+    if (node.data === '('){
+      counter++;
+    }
+    if (node.data === ')'){
+      counter--;
+    }
+    position++;
+    if (counter<0){
+      return new Error(`extra close parens at position: ${position}`)
+    }
+    node = node.next;
+  }
+  if (counter === 0){
+    return true;
+  } else {
+    return new Error(`extra open parens somewhere`);
+  }
+}
+
 
 function main(){
   const starTrek = new Stack();
@@ -86,7 +115,10 @@ function main(){
   //Have to pop twice as McCoy is not on top
   starTrek.pop();
   // display(starTrek);
-  console.log(is_palindrome(`0987654321234567890`));
+  //  console.log(is_palindrome(`0987654321234567890`));
+  console.log(matching('()'));
+  console.log(matching('(bob))'));
+  console.log(matching('(()'));
 }
 
 main();
