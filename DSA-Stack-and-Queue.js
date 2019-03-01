@@ -56,9 +56,9 @@ function is_palindrome(input){
   input = input.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
   const test = new Stack();
   for(let x = 0; x < input.length; x++){
+    //if we want to make this binary, we can do input.length - x - 1 or something
     test.push(input.charAt(x))
   }
-  display(test);
   let i = 0;
   while(test.top !== null){
     if(test.pop().data !== input[i]){
@@ -75,27 +75,63 @@ const matching = string => {
   for (let i = 0; i < string.length; i++){
       stack.push(string[string.length -1 - i]);
     }
-  console.log(stack);
-  let node = stack.top;
-  let counter = 0;
+  //ParensCounter
+  let parensCounter = 0;
+  // Square Brackets Counter
+  let squareBracketsCounter = 0;
+  //Generic Position Counter
   let position = 0;
-  while(node){
-    if (node.data === '('){
-      counter++;
-    }
-    if (node.data === ')'){
-      counter--;
-    }
+  //Last Open Parens Variable
+  let doKoDe = 0;
+  //Last Open Brackets Counter
+  let zaiNaer = 0;
+
+  let lastOpened = new Stack();
+  let popped = '';
+  while(stack.top){
     position++;
-    if (counter<0){
+    if (peek(stack) === '('){
+      parensCounter++;
+      doKoDe = position;
+      lastOpened.push('(');
+    }
+    if (peek(stack) === ')'){
+      parensCounter--;
+      popped = lastOpened.pop().data;
+      if(popped !== '('){
+        return new Error(`Expecting: ${popped} type bracket, but found ')' at position: ${position}`)
+      }
+    }
+    if (peek(stack) === '['){
+      squareBracketsCounter++;
+      zaiNaer = position;
+      lastOpened.push('[');
+    }
+    if (peek(stack) === ']'){
+      squareBracketsCounter--;
+      popped = lastOpened.pop().data;
+      if(popped !== '['){
+        return new Error(`Expecting: ${popped} type bracket, but found ']' at position:${position}`)
+      }
+    }
+    if (parensCounter<0){
       return new Error(`extra close parens at position: ${position}`)
     }
-    node = node.next;
+    if (squareBracketsCounter<0){
+      return new Error(`extra close square bracket at position: ${position}`)
+    }
+
+    stack.pop();
   }
-  if (counter === 0){
+  if (parensCounter === 0 && squareBracketsCounter === 0){
     return true;
   } else {
-    return new Error(`extra open parens somewhere`);
+    if(parensCounter !== 0){
+      return new Error(`extra open parens at position: ${doKoDe}`);
+    }
+    if(squareBracketsCounter !== 0){
+      return new Error(`Extra open squareBracket at position: ${zaiNaer}`);
+    }
   }
 }
 
@@ -117,7 +153,12 @@ function main(){
   // console.log(is_palindrome(`0987654321234567890`));
   // console.log(matching('()'));
   // console.log(matching('(bob))'));
-  // console.log(matching('(()'));
+  // console.log(matching('((Help))IhaveFallen((andIcantGetUp())'));
+  // console.log(matching('(sho(rter)'))
+  console.log(matching('(([]))'));
+  console.log(matching('(([)]'));
+  console.log(matching('(()[])'));
+  console.log(matching('(()())['));
 }
 
 main();
