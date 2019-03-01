@@ -81,6 +81,8 @@ const display = stack => {
   }
 }
 
+
+
 //Palindromes
 function is_palindrome(input){
   input = input.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
@@ -211,7 +213,25 @@ const sortStack = stack => {
   display(stack);
 }
 
+const qPeek = queue => {
+  if(queue.first === null){
+    console.log('The queue is empty');
+    return new Error('The queue is empty');
+  }
+  return queue.first.data;
+}
 
+const qDisplay = queue => {
+  if(queue.first === null){
+    console.log('The queue is empty');
+    return new Error('The queue is empty');
+  }
+  let node = queue.first;
+  while(node !== null){
+    console.log(node.data);
+    node = node.next;
+  }
+}
 
 function main(){
   const starTrek = new Stack();
@@ -250,7 +270,11 @@ function main(){
 
   const starTrekQ = new Queue();
   starTrekQ.enqueue('Kirk');
-  console.log(starTrekQ);
+  starTrekQ.enqueue('Spock');
+  starTrekQ.enqueue('Uhura');
+  starTrekQ.enqueue('Sulu');
+  starTrekQ.enqueue('Checkov');
+  qDisplay(starTrekQ);
 }
 
 main();
