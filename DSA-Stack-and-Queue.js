@@ -79,12 +79,16 @@ const matching = string => {
   let parensCounter = 0;
   // Square Brackets Counter
   let squareBracketsCounter = 0;
+  // Curly Counter
+  let curlyCounter = 0;
   //Generic Position Counter
   let position = 0;
   //Last Open Parens Variable
   let doKoDe = 0;
   //Last Open Brackets Counter
   let zaiNaer = 0;
+  //Last Open Brace Counter
+  let ou = 0;
 
   let lastOpened = new Stack();
   let popped = '';
@@ -97,6 +101,9 @@ const matching = string => {
     }
     if (peek(stack) === ')'){
       parensCounter--;
+      if (parensCounter<0){
+        return new Error(`extra close parens at position: ${position}`)
+      }
       popped = lastOpened.pop().data;
       if(popped !== '('){
         return new Error(`Expecting: ${popped} type bracket, but found ')' at position: ${position}`)
@@ -105,34 +112,56 @@ const matching = string => {
     if (peek(stack) === '['){
       squareBracketsCounter++;
       zaiNaer = position;
-      lastOpened.push('[');
+      lastOpened.push(']');
     }
     if (peek(stack) === ']'){
       squareBracketsCounter--;
+      if (squareBracketsCounter<0){
+        return new Error(`extra close square bracket at position: ${position}`)
+      }
       popped = lastOpened.pop().data;
       if(popped !== '['){
         return new Error(`Expecting: ${popped} type bracket, but found ']' at position:${position}`)
       }
     }
-    if (parensCounter<0){
-      return new Error(`extra close parens at position: ${position}`)
+    if (peek(stack) === '{'){
+      curlyCounter++;
+      ou = position;
+      lastOpened.push('{');
     }
-    if (squareBracketsCounter<0){
-      return new Error(`extra close square bracket at position: ${position}`)
+    if (peek(stack) === '}'){
+      curlyCounter--;
+      if (curlyCounter<0){
+        return new Error(`extra close curly brace at position: ${position}`)
+      }
+      popped = lastOpened.pop().data;
+      if(popped !== '{'){
+        return new Error(`Expecting: ${popped} type bracket, but found '}' at position:${position}`)
+      }
     }
-
     stack.pop();
   }
-  if (parensCounter === 0 && squareBracketsCounter === 0){
+  if (parensCounter === 0 && squareBracketsCounter === 0 && curlyCounter === 0){
     return true;
   } else {
     if(parensCounter !== 0){
-      return new Error(`extra open parens at position: ${doKoDe}`);
+      return new Error(`extra open parens at position: ${doKoDe}.`);
     }
     if(squareBracketsCounter !== 0){
-      return new Error(`Extra open squareBracket at position: ${zaiNaer}`);
+      return new Error(`Extra open square bracket at position: ${zaiNaer}.`);
+    }
+    if(curlyCounter !== 0){
+      return new Error(`Extra open curly brace at position: ${ou}.`);
     }
   }
+}
+
+const sortStack = stack => {
+  let tempStack = new Stack();
+  let tempItem = stack.pop();
+  if(tempItem.data < stack.peek().data){
+    tempStack.push(tempItem)
+  } else tempStack.push(stack.pop());
 }
 
 
@@ -155,10 +184,13 @@ function main(){
   // console.log(matching('(bob))'));
   // console.log(matching('((Help))IhaveFallen((andIcantGetUp())'));
   // console.log(matching('(sho(rter)'))
-  console.log(matching('(([]))'));
-  console.log(matching('(([)]'));
-  console.log(matching('(()[])'));
-  console.log(matching('(()())['));
+  //console.log(matching('(([]))'));
+  //console.log(matching('(([)]'));
+  //console.log(matching('(()[])'));
+  //console.log(matching('(()())['));
+  //console.log(matching('{{}'));
+  //console.log(matching('{}}'));
+  console.log(matching('({)}'));
 }
 
 main();
