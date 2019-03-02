@@ -6,10 +6,10 @@ class _Node {
 }
 
 class _QNode {
-  constructor(data, next, previous){
+  constructor(data){
     this.data = data;
-    this.next = next;
-    this.previous = previous;
+    this.next = null;
+    this.prev = null;
   }
 }
 
@@ -19,7 +19,7 @@ class Queue {
     this.last = null;
   }
   //FIFO
-   enqueue(data){
+  enqueue(data){
     const node = new _QNode(data);
 
     if (this.first === null){
@@ -31,9 +31,22 @@ class Queue {
     }
     this.last = node;
   }
+  dequeue(){
+    if(this.first === null){
+      return new Error('The queue is empty');
+    }  
+    let item = this.first;
+    this.first = this.first.prev;
+    if(item === this.last){
+      this.last = null;
+    }
+    return item.data;
+  }
 
 
 }
+
+
 
 class Stack {
   constructor(){
@@ -227,23 +240,39 @@ const qDisplay = queue => {
     return new Error('The queue is empty');
   }
   let node = queue.first;
-  while(node !== null){
+  while(node !== null && node !== undefined){
     console.log(node.data);
-    node = node.next;
+    node = node.prev;
   }
 }
 
+const squareDance = dancers => {
+  const waitingList = new Queue();
+  for(let d = 0; d < dancers.length; d++){
+    if(waitingList.first === null){
+      waitingList.enqueue(dancers[d])
+    } else if(dancers[d][0] !== waitingList.first.data[0]){
+      let partner = waitingList.dequeue();
+      console.log(`${dancers[d]} dances with ${partner}`);
+    } else {
+      waitingList.enqueue(dancers[d]);
+    }
+  }
+  console.log(`The following are waiting for dances:`);
+  qDisplay(waitingList);
+}
+
 function main(){
-  const starTrek = new Stack();
-  starTrek.push('Kirk');
-  starTrek.push('Spock');
-  starTrek.push('McCoy');
-  starTrek.push('Scotty');
-  // console.log(peek(starTrek));
-  // display(starTrek);
-  starTrek.pop();
-  //Have to pop twice as McCoy is not on top
-  starTrek.pop();
+  // const starTrek = new Stack();
+  // starTrek.push('Kirk');
+  // starTrek.push('Spock');
+  // starTrek.push('McCoy');
+  // starTrek.push('Scotty');
+  // // console.log(peek(starTrek));
+  // // display(starTrek);
+  // starTrek.pop();
+  // //Have to pop twice as McCoy is not on top
+  // starTrek.pop();
   // display(starTrek);
   // console.log(is_palindrome('madam'));
   // console.log(is_palindrome('12345678'));
@@ -268,13 +297,22 @@ function main(){
   //sortStack(numbStack);
 
 
-  const starTrekQ = new Queue();
-  starTrekQ.enqueue('Kirk');
-  starTrekQ.enqueue('Spock');
-  starTrekQ.enqueue('Uhura');
-  starTrekQ.enqueue('Sulu');
-  starTrekQ.enqueue('Checkov');
-  qDisplay(starTrekQ);
+  // const starTrekQ = new Queue();
+  // starTrekQ.enqueue('Kirk');
+  // console.log(starTrekQ);
+  // starTrekQ.enqueue('Spock');
+  // console.log(starTrekQ);
+  // starTrekQ.enqueue('Uhura');
+  // starTrekQ.enqueue('Sulu');
+  // starTrekQ.enqueue('Checkov');
+  // console.log(starTrekQ);
+  // qDisplay(starTrekQ);
+  // // starTrekQ.dequeue();
+  // starTrekQ.dequeue();
+  // qDisplay(starTrekQ);
+  const dancers = ['F Jane', 'M Frank', 'M John', 'M Sherlock', 'F Modanna',
+    'M David', 'M Christopher', 'F Beyonce'];
+  squareDance(dancers);
 }
 
 main();
